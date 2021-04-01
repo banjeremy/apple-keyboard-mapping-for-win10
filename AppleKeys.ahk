@@ -27,10 +27,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; - cut (CMD+X)
 ; - paste with dest formatting (CMD+ALT+SHIFT+V)
 
-#c::Send ^c
-#v::Send ^v
-#x::Send ^x
-#!+v::Send ^+v
+!c::Send ^c
+!v::Send ^v
+!x::Send ^x
+!^+v::Send ^+v
 
 
 
@@ -41,20 +41,20 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; - move between words (ALT+Arrow)
 ; - select by word (ALT+SHIFT+Arrow)
 
-#Left::Send {Home}
-#+Left::Send +{Home}
-#Right::Send {End}
-#+Right::Send +{End}
-#Up::Send ^{Home}
-#+Up::Send ^+{Home}
-#Down::Send ^{End}
-#+Down::Send ^+{End}
-#Backspace::Send +{Home}{Delete}
-!Backspace::Send ^{Backspace}
-!Left::Send ^{Left}
-!+Left::Send ^+{Left}
-!Right::Send ^{Right}
-!+Right::Send ^+{Right}
+!Left::Send {Home}
+!+Left::Send +{Home}
+!Right::Send {End}
+!+Right::Send +{End}
+!Up::Send ^{Home}
+!+Up::Send ^+{Home}
+!Down::Send ^{End}
+!+Down::Send ^+{End}
+!Backspace::Send +{Home}{Delete}
+#Backspace::Send ^{Backspace}
+#Left::Send ^{Left}
+#+Left::Send ^+{Left}
+#Right::Send ^{Right}
+#+Right::Send ^+{Right}
 
 
 
@@ -65,13 +65,13 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; - formatting (CMD+B, CMD+I, CMD+U)
 ; - change font size (CMD+SHIFT+>, CMD+SHIFT+<)
 
-#a::Send ^a
-#f::Send ^f
-#b::Send ^b
-#i::Send ^i
-#u::Send ^u
-#+>::Send ^+>
-#+<::Send ^+<
+!a::Send ^a
+!f::Send ^f
+!b::Send ^b
+!i::Send ^i
+!u::Send ^u
+!+=::Send ^+=
+!+-::Send ^+-
 
 
 
@@ -82,8 +82,9 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; - close window/ta (CMD+W), CMD+`
 ;    disclaimer: CMD+` requires Easy Window Switcher neosmart (https://neosmart.net/Download)
 
-#q::Send !{F4}
-#`::Send !~
+!`::Send !~
+!w::Send ^{F4}
+!q::Send !{F4}
 
 
 
@@ -95,21 +96,21 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; - zoom (CMD+=, CMD+SHIFT+=)
 ; - switch between tabs (CMD+1...CMD+0)
 
-#t::Send ^t
-#+t::Send ^+t
-#w::Send ^w{Esc}
-#=::Send ^=
-#-::Send ^-
-#1::Send ^1
-#2::Send ^2
-#3::Send ^3
-#4::Send ^4
-#5::Send ^5
-#6::Send ^6
-#7::Send ^7
-#8::Send ^8
-#9::Send ^9
-#0::Send ^0
+!t::Send ^t
+!+t::Send ^+t
+;!w::Send ^w{Esc}
+!=::Send ^=
+!-::Send ^-
+!1::Send ^1
+!2::Send ^2
+!3::Send ^3
+!4::Send ^4
+!5::Send ^5
+!6::Send ^6
+!7::Send ^7
+!8::Send ^8
+!9::Send ^9
+!0::Send ^0
 
 
 
@@ -124,21 +125,22 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; - undo (CMD+Z)
 ; - redo (CMD+SHIFT+Z)
 
-#n::Send ^n
-#+n::Send ^+n
-#o::Send ^o
-#+o::Send ^+o
-#p::Send ^p
-#s::Send ^s
-#+s::Send ^!s
+!n::Send ^n
+!+n::Send ^+n
+!o::Send ^o
+!+o::Send ^+o
+!p::Send ^p
+!s::Send ^s
+!+s::Send ^!s
 
 
 
 ; =====================
 ; 6. undo/redo (CMD+Z, CMD+SHIFT+Z)
 
-#z::Send ^z
-#+z::Send ^y
+!z::Send ^z
+!+z::Send ^y
+!y::Send ^y
 
 
 
@@ -146,15 +148,20 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; 7. additional in-app commands
 ; - CMD+R
 ; - CMD+D
+; - CMD+L
+; - CMD+,
 ; - CMD+\ (requires 1password)
 ; - CMD+], CMD+[, CMD+\ (Visual Studio Code)
 
-#r::Send ^r
-#d::Send ^d
-#\::Send ^\
-#]::Send ^]
-#[::Send ^[
-#/::Send ^/
+!r::Send ^r
+!d::Send ^d
+!l::Send ^l
+!,::Send ^,
+!\::Send ^\
+!]::Send ^]
+![::Send ^[
+!/::Send ^/
+
 
 
 
@@ -165,42 +172,59 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 
 ; =====================
-; 9. spotlight (CMD+SPACE), tasks (CMD+ALT+ESC)
-#Space::Send ^{Esc}
-#!Esc::Send ^+{Esc}
+; 9. spotlight (CMD+SPACE)
+!Space::Send ^{Esc}
 
 
 
 ; =====================
 ; 10. App-Switcher (CMD+Tab, CMD+Paragraph)
 ; unfortunately CMD+SHIFT+Tab doesn't work (AutoHotKey has very limited support for this, so we use CMD+Paragraph (the key above Tab) to switch to previous app) 
-<#Tab::AltTab
-<#Sc056::ShiftAltTab
+<!Tab::AltTab
+<!Sc056::ShiftAltTab
 
-
+; Desktop navigation (CTRL+Arrow)
+^Left::Send ^#{Left}
+^Right::Send ^#{Right}
+^Up::Send #{Tab}
+^Down::Send #d
 
 ; =====================
-; 11. MagnetApp-Like window snapping - CTRL+ALT+Arrow
-^!Left::WinMove, A,, 0, 0, (A_ScreenWidth/2), (A_ScreenHeight)
-^!Right::WinMove, A,, (A_ScreenWidth/2), 0, (A_ScreenWidth/2), (A_ScreenHeight)
-^!Up::WinMove, A,, 0, 0, (A_ScreenWidth), (A_ScreenHeight/2)
-^!Down::WinMove, A,, 0, (A_ScreenHeight/2), (A_ScreenWidth), (A_ScreenHeight/2)
-^!u::WinMove, A,, 0, 0, (A_ScreenWidth/2), (A_ScreenHeight/2)
-^!i::WinMove, A,, (A_ScreenWidth/2), 0, (A_ScreenWidth/2), (A_ScreenHeight/2)
-^!j::WinMove, A,, 0, (A_ScreenHeight/2), (A_ScreenWidth/2), (A_ScreenHeight/2)
-^!k::WinMove, A,, (A_ScreenWidth/2), (A_ScreenHeight/2), (A_ScreenWidth/2), (A_ScreenHeight/2)
+; 11. Spectacle-Like window snapping - CTRL+ALT+Arrow
+!#Left::WinMove, A,, 0, 0, (A_ScreenWidth/2), (A_ScreenHeight)
+!#Right::WinMove, A,, (A_ScreenWidth/2), 0, (A_ScreenWidth/2), (A_ScreenHeight)
+;^!Up::WinMove, A,, 0, 0, (A_ScreenWidth), (A_ScreenHeight/2)
+;^!Down::WinMove, A,, 0, (A_ScreenHeight/2), (A_ScreenWidth), (A_ScreenHeight/2)
+^!Left::WinMove, A,, 0, 0, (A_ScreenWidth/2), (A_ScreenHeight/2)
+^!Right::WinMove, A,, (A_ScreenWidth/2), 0, (A_ScreenWidth/2), (A_ScreenHeight/2)
+^+!Left::WinMove, A,, 0, (A_ScreenHeight/2), (A_ScreenWidth/2), (A_ScreenHeight/2)
+^+!Right::WinMove, A,, (A_ScreenWidth/2), (A_ScreenHeight/2), (A_ScreenWidth/2), (A_ScreenHeight/2)
+!#f::WinMove, A,, 0, 0, (A_ScreenWidth), (A_ScreenHeight)
 
-; MagnetApp-Like maximize/restore window - CTRL+ALT+Enter
-^!Enter::
-SysGet, VirtualScreenWidth, 78
-WinGetPos, X, Y, Width, Height, A
 
-If (Virtualscreenwidth = A_ScreenWidth) {
-   If (Width < A_ScreenWidth) {
-      WinMaximize, A
-   } Else {
-      WinRestore, A
-   }
+
+^!f::
+WinGet, IsWindowMaximized, MinMax, A
+
+If (IsWindowMaximized > 0) {
+   WinRestore, A
+} Else {
+   WinMaximize, A
 }
 Return
 
+
+; --------------------------------------------------------------
+; Application specific
+; --------------------------------------------------------------
+
+; Google Chrome
+#IfWinActive, ahk_class Chrome_WidgetWin_1
+
+; Show Web Developer Tools with cmd + alt + i
+!#i::Send {F12}
+
+; Show source code with cmd + alt + u
+!#u::Send ^u
+
+#IfWinActive
