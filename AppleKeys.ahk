@@ -41,6 +41,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; - move between words (ALT+Arrow)
 ; - select by word (ALT+SHIFT+Arrow)
 
+#Up::Send ^{Up}
+#Down::Send ^{Down}
 !Left::Send {Home}
 !+Left::Send +{Home}
 !Right::Send {End}
@@ -62,11 +64,13 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; 2b. text editor
 ; - select all (CMD+A)
 ; - find (CMD+F)
+; - find all (CMD+Shift+F)
 ; - formatting (CMD+B, CMD+I, CMD+U)
 ; - change font size (CMD+SHIFT+>, CMD+SHIFT+<)
 
 !a::Send ^a
 !f::Send ^f
+!+f::Send ^+f
 !b::Send ^b
 !i::Send ^i
 !u::Send ^u
@@ -99,7 +103,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 !t::Send ^t
 !+t::Send ^+t
 ;!w::Send ^w{Esc}
-!=::Send ^=
+!=::Send ^{=}
 !-::Send ^-
 !1::Send ^1
 !2::Send ^2
@@ -129,7 +133,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 !+n::Send ^+n
 !o::Send ^o
 !+o::Send ^+o
-!p::Send ^p
+;!p::Send ^p
 !s::Send ^s
 !+s::Send ^!s
 
@@ -191,27 +195,15 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 ; =====================
 ; 11. Spectacle-Like window snapping - CTRL+ALT+Arrow
-!#Left::WinMove, A,, 0, 0, (A_ScreenWidth/2), (A_ScreenHeight)
-!#Right::WinMove, A,, (A_ScreenWidth/2), 0, (A_ScreenWidth/2), (A_ScreenHeight)
-;^!Up::WinMove, A,, 0, 0, (A_ScreenWidth), (A_ScreenHeight/2)
-;^!Down::WinMove, A,, 0, (A_ScreenHeight/2), (A_ScreenWidth), (A_ScreenHeight/2)
-^!Left::WinMove, A,, 0, 0, (A_ScreenWidth/2), (A_ScreenHeight/2)
-^!Right::WinMove, A,, (A_ScreenWidth/2), 0, (A_ScreenWidth/2), (A_ScreenHeight/2)
-^+!Left::WinMove, A,, 0, (A_ScreenHeight/2), (A_ScreenWidth/2), (A_ScreenHeight/2)
-^+!Right::WinMove, A,, (A_ScreenWidth/2), (A_ScreenHeight/2), (A_ScreenWidth/2), (A_ScreenHeight/2)
-!#f::WinMove, A,, 0, 0, (A_ScreenWidth), (A_ScreenHeight)
+; had better luck installing AquaSnap for handling window snapping
+; https://www.nurgo-software.com/products/aquasnap
 
 
 
-^!f::
-WinGet, IsWindowMaximized, MinMax, A
-
-If (IsWindowMaximized > 0) {
-   WinRestore, A
-} Else {
-   WinMaximize, A
-}
-Return
+; =====================
+; 12. Suspend Windows - CTRL+CMD+Q
+;
+^!q::DllCall("PowrProf\SetSuspendState", "Int", 0, "Int", 0, "Int", 0)
 
 
 ; --------------------------------------------------------------
@@ -227,4 +219,17 @@ Return
 ; Show source code with cmd + alt + u
 !#u::Send ^u
 
+#IfWinActive
+
+
+; VS Code
+; Go to file (CMD+P)
+; Command pallet (CMD+SHIFT+P)
+!p::Send ^p
+!+p::Send ^+p
+!j::Send ^j
+
+
+#IfWinActive, ahk_class CASCADIA_HOSTING_WINDOW_CLASS
+!w::Send ^w
 #IfWinActive
