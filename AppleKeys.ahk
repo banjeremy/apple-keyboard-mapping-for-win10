@@ -57,6 +57,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #+Left::Send ^+{Left}
 #Right::Send ^{Right}
 #+Right::Send ^+{Right}
+#Delete::Send ^{Delete}
 
 
 
@@ -206,6 +207,9 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ^!q::DllCall("PowrProf\SetSuspendState", "Int", 0, "Int", 0, "Int", 0)
 
 
+; emoji keyboard
+^!Space::Send #.
+
 ; --------------------------------------------------------------
 ; Application specific
 ; --------------------------------------------------------------
@@ -232,4 +236,5 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #IfWinActive, ahk_class CASCADIA_HOSTING_WINDOW_CLASS
 !w::Send ^w
+!d::Send ^{F1}
 #IfWinActive
